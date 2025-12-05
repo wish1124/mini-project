@@ -18,8 +18,9 @@ public class UserResponse {
     //  Book 엔티티를 받아서 응답 DTO로 변환하는 생성자
     public UserResponse(User user) {
         this.id = user.getId();
-        this.email = user.getemail();
-        this.name = user.getname();
+        this.email = user.getEmail();
+        this.name = user.getName();
         this.api_Key = user.getApi_Key();
+        this.password = user.getPassowrd();
     }
 }

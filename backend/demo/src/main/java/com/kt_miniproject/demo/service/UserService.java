@@ -9,9 +9,6 @@ public interface UserService {
 
     UserResponse createUser(UserCreateRequest request);
 
-    UserResponse getBookById(Long id);
-
-    void deleteBook(Long id)
-
+    UserResponse getUserInfo(Long id);
 
 }

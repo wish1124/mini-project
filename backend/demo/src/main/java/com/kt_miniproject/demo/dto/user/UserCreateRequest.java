@@ -9,6 +9,6 @@ public class UserCreateRequest {
     private String email;
     private String password;
     private String name;
-    private boolean role;
+    private Role role;
     private String api_key;
 }
