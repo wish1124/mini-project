@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import BookCreatePage from './components/BookCreatePage';
-import BookEditPage from './components/BookEditPage';
+import Enroll from './components/enroll.jsx';
+import Revision from './components/revision.jsx';
 
 const theme = createTheme({
   palette: {
@@ -33,9 +33,13 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/books/create" replace />} />
-          <Route path="/books/create" element={<BookCreatePage />} />
-          <Route path="/books/:id/edit" element={<BookEditPage />} />
+          <Route path="/" element={<Navigate to="/enroll" replace />} />
+          <Route path="/enroll" element={<Enroll />} />
+          <Route path="/revision/:id" element={<Revision />} />
+          {/* 테스트용 직접 링크 */}
+          <Route path="/test/revision1" element={<Navigate to="/revision/1" replace />} />
+          <Route path="/test/revision2" element={<Navigate to="/revision/2" replace />} />
+          <Route path="/test/revision3" element={<Navigate to="/revision/3" replace />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
