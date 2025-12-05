@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -24,50 +24,20 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 
-function BookEditPage() {
+function Enroll() {
   const navigate = useNavigate();
-  const { id } = useParams();
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    coverImageType: 'existing', // 'existing', 'upload', or 'ai'
+    coverImageType: 'upload', // 'upload' or 'ai'
   });
-  const [existingImage, setExistingImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [aiPrompt, setAiPrompt] = useState('');
   const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [fetchLoading, setFetchLoading] = useState(true);
   const [aiGenerating, setAiGenerating] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  useEffect(() => {
-    fetchBookDetails();
-  }, [id]);
-
-  const fetchBookDetails = async () => {
-    setFetchLoading(true);
-    try {
-      const response = await axios.get(`/api/books/${id}`);
-      
-      if (response.data.success && response.data.data) {
-        const book = response.data.data;
-        setFormData({
-          title: book.title || '',
-          content: book.content || '',
-          coverImageType: 'existing',
-        });
-        setExistingImage(book.coverImageUrl || null);
-        setPreviewImage(book.coverImageUrl || null);
-      }
-    } catch (err) {
-      console.error('도서 정보 조회 오류:', err);
-      setError(err.response?.data?.message || '도서 정보를 불러오는 중 오류가 발생했습니다.');
-    } finally {
-      setFetchLoading(false);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,17 +45,6 @@ function BookEditPage() {
       ...prev,
       [name]: value
     }));
-    
-    if (name === 'coverImageType') {
-      if (value === 'existing') {
-        setPreviewImage(existingImage);
-        setUploadedImage(null);
-      } else if (value === 'upload') {
-        setPreviewImage(null);
-      } else if (value === 'ai') {
-        setPreviewImage(null);
-      }
-    }
   };
 
   const handleImageUpload = (e) => {
@@ -171,41 +130,32 @@ function BookEditPage() {
       } else if (formData.coverImageType === 'ai' && previewImage) {
         formDataToSend.append('aiCoverUrl', previewImage);
       }
-      // coverImageType이 'existing'이면 기존 이미지 유지 (서버에서 처리)
 
-      const response = await axios.put(`/api/books/${id}`, formDataToSend, {
+      const response = await axios.post('/api/books', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       if (response.data.success) {
-        setSuccess('도서가 성공적으로 수정되었습니다!');
+        setSuccess('도서가 성공적으로 등록되었습니다!');
         setTimeout(() => {
-          navigate(`/books/${id}`);
+          navigate('/books');
         }, 1500);
       }
     } catch (err) {
-      console.error('도서 수정 오류:', err);
-      setError(err.response?.data?.message || '도서 수정 중 오류가 발생했습니다.');
+      console.error('도서 등록 오류:', err);
+      setError(err.response?.data?.message || '도서 등록 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
   };
 
-  if (fetchLoading) {
-    return (
-      <Container maxWidth="md" sx={{ py: 4, display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
-      </Container>
-    );
-  }
-
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom align="center">
-          도서 수정
+          신규 도서 등록
         </Typography>
 
         {error && (
@@ -254,14 +204,9 @@ function BookEditPage() {
               onChange={handleInputChange}
             >
               <FormControlLabel
-                value="existing"
-                control={<Radio />}
-                label="기존 이미지 유지"
-              />
-              <FormControlLabel
                 value="upload"
                 control={<Radio />}
-                label="새로 업로드"
+                label="직접 업로드"
               />
               <FormControlLabel
                 value="ai"
@@ -327,7 +272,7 @@ function BookEditPage() {
                 sx={{ height: 300, objectFit: 'cover' }}
               />
               <Typography variant="caption" sx={{ p: 1, display: 'block', textAlign: 'center' }}>
-                {formData.coverImageType === 'existing' ? '현재 표지' : '표지 미리보기'}
+                표지 미리보기
               </Typography>
             </Card>
           )}
@@ -341,13 +286,13 @@ function BookEditPage() {
               startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
               disabled={loading}
             >
-              {loading ? '수정 중...' : '도서 수정'}
+              {loading ? '등록 중...' : '도서 등록'}
             </Button>
             <Button
               variant="outlined"
               size="large"
               fullWidth
-              onClick={() => navigate(`/books/${id}`)}
+              onClick={() => navigate('/books')}
               disabled={loading}
             >
               취소
@@ -359,4 +304,4 @@ function BookEditPage() {
   );
 }
 
-export default BookEditPage;
+export default Enroll;
