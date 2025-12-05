@@ -3,7 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Enroll from './components/enroll.jsx';
-import Revision from './components/revision.jsx';
+import Revision from './components/revision-1.jsx';
+import LoginPage from './components/login.jsx'; // ← login import 추가
+import RegisterPage from './components/register.jsx'; // ← register import 추가
+import MyPage from './components/my_page.jsx';
 
 const theme = createTheme({
   palette: {
@@ -33,7 +36,16 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/enroll" replace />} />
+            {/* 기본 페이지 → 로그인으로 이동 */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+
+            {/* 로그인 페이지 */}
+          <Route path="/login" element={<LoginPage />} />
+          {/*회원가입 페이지*/}
+          <Route path="/register" element={<RegisterPage />} />
+          {/*  마이페이지 */}
+           <Route path="/my_page" element={<MyPage />} />
+
           <Route path="/enroll" element={<Enroll />} />
           <Route path="/revision/:id" element={<Revision />} />
           {/* 테스트용 직접 링크 */}
