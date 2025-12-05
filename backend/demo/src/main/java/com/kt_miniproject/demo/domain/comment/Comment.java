@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class Comment {
 
     @Id
@@ -22,30 +21,45 @@ public class Comment {
     @Column(name = "comment_id")
     private Long id;
 
+    // 옵션: 제목 (API 명세서에는 없지만 컬럼은 유지)
     @Column(name = "comment_title", length = 200)
     private String title;
 
-    @Column(name = "comment_content", columnDefinition = "TEXT")
+    // 필수: 댓글 내용
+    @Column(name = "comment_content", columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(name = "comment_date")
+    // 필수: 작성 시간
+    @Column(name = "comment_date", nullable = false)
     private LocalDateTime createdAt;
 
+    // 옵션: 활성/비활성 플래그 (명세서에는 없지만 컬럼 유지)
     @Column(name = "comment_active")
     private Boolean active;
 
-    @Column(name = "comment_recommend")
-    private Integer recommend;
-
-    // ====================== FK 관계 ====================== //
+    // 필수: 추천(좋아요) 수
+    @Column(name = "comment_recommend", nullable = false)
+    private Integer recommend = 0;
 
     // Comment → User (N:1)
     @ManyToOne
-    @JoinColumn(name = "users_user_id")   // ★ FK 이름 맞춰 수정
+    @JoinColumn(name = "users_user_id", nullable = false)
     private User user;
 
     // Comment → Book (N:1)
     @ManyToOne
-    @JoinColumn(name = "book_book_id")   // ERD FK 이름 그대로
+    @JoinColumn(name = "book_book_id", nullable = false)
     private Book book;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        // active를 기본 true로 쓰고 싶으면:
+        if (this.active == null) {
+            this.active = true;
+        }
+        if (this.recommend == null) {
+            this.recommend = 0;
+        }
+    }
 }

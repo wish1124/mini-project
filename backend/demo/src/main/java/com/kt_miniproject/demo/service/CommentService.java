@@ -1,15 +1,16 @@
-package com.kt_miniproject.demo.domain.common;
+package com.kt_miniproject.demo.service;
 
-import com.kt_miniproject.demo.domain.comment.Comment;
+import com.kt_miniproject.demo.dto.comment.CommentCreateRequest;
+import com.kt_miniproject.demo.dto.comment.CommentResponse;
+
+import java.util.List;
 
 public interface CommentService {
 
-    // 댓글 작성
-    Comment createComment(Long bookId, Long userId, String content);
+    CommentResponse createComment(Long bookId, Long userId, CommentCreateRequest request);
 
-    // 댓글 삭제
-    void deleteComment(Long commentId);
+    List<CommentResponse> getComments(Long bookId);
 
-    // 댓글 추천(좋아요)
-    Comment likeComment(Long commentId);
+    void deleteComment(Long bookId, Long commentId);
+
 }
