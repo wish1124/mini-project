@@ -24,4 +24,8 @@ public interface BookService {
 
     // 제목 검색
     List<BookResponse> searchBooks(String title);
+
+    BookResponse updateBookCoverUrl(Long id, String imageUrl);
+
+    String generateAiImageUrl(Long id);
 }
