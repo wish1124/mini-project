@@ -5,6 +5,8 @@ import com.kt_miniproject.demo.domain.comment.Comment;
 import com.kt_miniproject.demo.domain.user.User;
 import com.kt_miniproject.demo.dto.comment.CommentCreateRequest;
 import com.kt_miniproject.demo.dto.comment.CommentResponse;
+import com.kt_miniproject.demo.exception.DeletionException;
+import com.kt_miniproject.demo.exception.ResourceNotFoundException;
 import com.kt_miniproject.demo.repository.BookRepository;
 import com.kt_miniproject.demo.repository.CommentRepository;
 import com.kt_miniproject.demo.repository.UserRepository;
@@ -33,14 +35,14 @@ public class CommentServiceImpl implements CommentService {
 
         // 댓글 내용 검증
         if (request.getContent() == null || request.getContent().trim().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "댓글 내용을 입력해야 합니다.");
+            throw new IllegalArgumentException("댓글 내용을 입력해야 합니다.");
         }
 
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Comment comment = Comment.builder()
                 .title(request.getTitle())
@@ -60,11 +62,11 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteComment(Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
 
         // 작성자만 삭제 가능
         if (!comment.getUser().getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "댓글을 삭제할 권한이 없습니다");
+            throw new DeletionException("댓글을 삭제할 권한이 없습니다");
         }
 
         commentRepository.delete(comment);

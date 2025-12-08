@@ -3,6 +3,7 @@ package com.kt_miniproject.demo.service;
 import com.kt_miniproject.demo.domain.book.Book;
 import com.kt_miniproject.demo.dto.book.BookCreateRequest;
 import com.kt_miniproject.demo.dto.book.BookResponse;
+import com.kt_miniproject.demo.exception.DeletionException;
 import com.kt_miniproject.demo.exception.ResourceNotFoundException;
 import com.kt_miniproject.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class BookServiceImpl implements BookService {
     public BookResponse getBookById(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Book not found. id=" + id)); //  illegalArgument에서 직접 처리한 예외로 변경
+                        new ResourceNotFoundException("책이 존재하지 않습니다. id=" + id)); //  illegalArgument에서 직접 처리한 예외로 변경
         return new BookResponse(book);
     }
 
@@ -58,7 +59,7 @@ public class BookServiceImpl implements BookService {
     public BookResponse updateBook(Long id, BookCreateRequest request) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Book not found. id=" + id)); //  illegalArgument에서 직접 처리한 예외로 변경
+                        new ResourceNotFoundException("책이 존재하지 않습니다. id=" + id)); //  illegalArgument에서 직접 처리한 예외로 변경
 
         book.setTitle(request.getTitle());
         book.setContent(request.getContent());
@@ -72,10 +73,13 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public void deleteBook(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Book not found. id=" + id); //  illegalArgument에서 직접 처리한 예외로 변경
-        }
-        bookRepository.deleteById(id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+//        // 작성자만 삭제 가능 하게 하는거
+//        if (!book.getUser().getId().equals(userId)) {
+//            throw new DeletionException("책을 삭제할 권한이 없습니다");
+//        }
+//        bookRepository.deleteById(id);
     }
 
     // 제목 검색 (like 검색)

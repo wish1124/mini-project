@@ -5,6 +5,7 @@ import com.kt_miniproject.demo.domain.comment.Comment;
 import com.kt_miniproject.demo.domain.recommend.BookRecommend;
 import com.kt_miniproject.demo.domain.recommend.CommentRecommend;
 import com.kt_miniproject.demo.domain.user.User;
+import com.kt_miniproject.demo.exception.ResourceNotFoundException;
 import com.kt_miniproject.demo.repository.BookRecommendRepository;
 import com.kt_miniproject.demo.repository.BookRepository;
 import com.kt_miniproject.demo.repository.CommentRecommendRepository;
@@ -27,10 +28,10 @@ public class RecommendServiceImpl implements RecommendService {
     public void recommendBook(Long bookId, Long userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
         if (bookRecommendRepository.existsByUserAndBook(user, book)) {
             throw new IllegalStateException("이미 추천한 도서입니다.");
@@ -48,10 +49,10 @@ public class RecommendServiceImpl implements RecommendService {
     public void recommendComment(Long commentId, Long userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
 
         if (commentRecommendRepository.existsByUserAndComment(user, comment)) {
             throw new IllegalStateException("이미 추천한 댓글입니다.");
