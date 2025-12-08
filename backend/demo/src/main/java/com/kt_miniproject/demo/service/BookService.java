@@ -8,7 +8,7 @@ import java.util.List;
 public interface BookService {
 
     // 도서 등록
-    BookResponse createBook(BookCreateRequest request, Long userId);
+    BookResponse createBook(BookCreateRequest request);
 
     // 전체 조회
     List<BookResponse> getAllBooks();

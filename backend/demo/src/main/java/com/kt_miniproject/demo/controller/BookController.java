@@ -21,10 +21,9 @@ public class BookController {
     // 1. 도서 등록 (Create)
     @PostMapping
     public ResponseEntity<BookResponse> createBook(
-            @RequestBody BookCreateRequest request,
-            @RequestParam("userId") Long userId) {
+            @RequestBody BookCreateRequest request) {
 
-        BookResponse response = bookService.createBook(request,userId);
+        BookResponse response = bookService.createBook(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

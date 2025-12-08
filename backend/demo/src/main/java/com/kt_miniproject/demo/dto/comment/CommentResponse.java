@@ -16,6 +16,7 @@ public class CommentResponse {
     private Integer recommend;
     private Long userId;
     private String userName;
+    private Long bookId;
 
     public CommentResponse(Comment comment) {
         this.id = comment.getId();
