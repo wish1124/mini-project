@@ -40,7 +40,7 @@ export default function TopBar() {
 
             // 204 성공 → 목록 페이지로 이동
             alert("삭제가 완료되었습니다.");
-            navigate("/books");
+            navigate("/MainPage");
 
         } catch (err) {
             console.error(err);
@@ -55,7 +55,7 @@ export default function TopBar() {
                 <IconButton
                     edge="start"
                     color="inherit"
-                    onClick={() => navigate('/books')}
+                    onClick={() => navigate('/MainPage')}
                 >
                     <ArrowBackIcon />
                 </IconButton>
