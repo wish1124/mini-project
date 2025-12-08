@@ -6,12 +6,9 @@ import BookCreatePage from './components/BookCreatePage';
 import BookEditPage from './components/BookEditPage';
 import InfoPage from './components/InfoPage';
 
-
-
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
+    palette: {
+        mode: 'light', // 필요에 따라 'dark' 가능
     },
     secondary: {
       main: '#dc004e',
@@ -39,7 +36,7 @@ function App() {
           <Route path="/" element={<Navigate to="/books/create" replace />} />
           <Route path="/books/create" element={<BookCreatePage />} />
           <Route path="/books/:id/edit" element={<BookEditPage />} />
-            <Route path="/books/:id" element={<InfoPage />} />
+          <Route path="/books/:id" element={<InfoPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
