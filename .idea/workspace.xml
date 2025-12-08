@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9bf0f0dc-0c03-4351-b918-b149077e8c4d" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="9bf0f0dc-0c03-4351-b918-b149077e8c4d" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -210,6 +207,18 @@
       </map>
     </option>
   </component>
+<<<<<<< HEAD
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+=======
   <component name="VcsManagerConfiguration">
     <MESSAGE value="User Service 관련 오류 수정" />
     <option name="LAST_COMMIT_MESSAGE" value="User Service 관련 오류 수정" />
@@ -217,5 +226,6 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+>>>>>>> 507efd04e16aba54ece04d1c9487a635a74537c2
   </component>
 </project>
