@@ -12,4 +12,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     // 특정 도서(book)에 달린 댓글 목록 조회
     List<Comment> findByBook(Book book);
+    List<Comment> findByBookId(Long bookId);
 }

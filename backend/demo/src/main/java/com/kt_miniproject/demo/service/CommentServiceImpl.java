@@ -10,18 +10,24 @@ import com.kt_miniproject.demo.repository.BookRepository;
 import com.kt_miniproject.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)     // ⭐ 기본은 조회 트랜잭션
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 댓글 생성 — 쓰기 트랜잭션 필요
+     */
     @Override
+    @Transactional                //  여기만 readOnly false
     public CommentResponse createComment(Long bookId, Long userId, CommentCreateRequest request) {
 
         User user = userRepository.findById(userId)
@@ -36,8 +42,7 @@ public class CommentServiceImpl implements CommentService {
                 .book(book)
                 .build();
 
-        // 양방향일 때 Book.comments에도 추가하고 싶으면
-        comment.setBook(book);   // setBook 안에서 book.getComments().add(this) 해주는 형태
+        comment.setBook(book);  //  너가 원래 넣은 로직 그대로 유지
 
         Comment saved = commentRepository.save(comment);
 
@@ -45,14 +50,18 @@ public class CommentServiceImpl implements CommentService {
                 .id(saved.getId())
                 .content(saved.getContent())
                 .userId(user.getId())
-                .userName(user.getName())          // User 엔티티의 필드명에 맞게 수정
+                .userName(user.getName())
                 .bookId(book.getId())
-                .createdAt(saved.getCreatedAt())   // BaseTimeEntity 쓰면 거기에서 가져오기
+                .createdAt(saved.getCreatedAt())
                 .build();
     }
 
+    /**
+     * 댓글 조회 — 기본 readOnly 트랜잭션 사용
+     */
     @Override
     public List<CommentResponse> getComments(Long bookId) {
+
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("도서를 찾을 수 없습니다."));
 
@@ -64,15 +73,20 @@ public class CommentServiceImpl implements CommentService {
                         .content(c.getContent())
                         .userId(c.getUser().getId())
                         .userName(c.getUser().getName())
-                        .bookId(c.getId())
+                        .bookId(c.getBook().getId())
                         .createdAt(c.getCreatedAt())
                         .build()
                 )
                 .toList();
     }
 
+    /**
+     * 댓글 삭제 — 쓰기 트랜잭션 필요
+     */
     @Override
+    @Transactional               //  삭제도 write 트랜잭션
     public void deleteComment(Long bookId, Long commentId) {
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
 
