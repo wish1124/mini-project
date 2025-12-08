@@ -227,6 +227,7 @@ function MainPage() {
                             <Box key={book.id} sx={{ mb: 2 }}>
                                 {/* BookCard: 책 카드 UI 컴포넌트 */}
                                 <BookCard
+                                    if = {book.id}
                                     title={book.title}
                                     content={book.content}
                                     imageUrl={book.coverImageUrl || book.aiCoverUrl}
@@ -248,6 +249,7 @@ function MainPage() {
                         normalBooks.map((book) => (
                             <Box key={book.id} sx={{ mb: 2 }}>
                                 <BookCard
+                                    id={book.id}
                                     title={book.title}
                                     content={book.content}
                                     imageUrl={book.coverImageUrl || book.aiCoverUrl}

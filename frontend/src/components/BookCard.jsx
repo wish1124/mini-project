@@ -1,6 +1,7 @@
 // src/components/BookCard.jsx
 import React from 'react';
 import { Card, CardMedia, Box, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function BookCard({
                       imageUrl,
@@ -8,6 +9,9 @@ function BookCard({
                       views,
                       content,
                   }) {
+    const navigate = useNavigate();
+
+
     // 가짜 데이터(임시) 기본값
     const displayTitle = title || '글 제목';
     const displayViews = views ?? 0;
@@ -19,10 +23,32 @@ function BookCard({
         imageUrl ||
         'https://via.placeholder.com/160x160?text=%EC%9D%B4%EB%AF%B8%EC%A7%80';
 
+    // 제목 클릭 시 /books/:id/info 로 이동
+    // 제목 클릭 시 infoPage.jsx로 이동 (고정 경로)
+    const handleTitleClick = () => {
+        navigate('/books/1/info');   // App.jsx에서 InfoPage가 매핑된 경로와 맞춰 줄 것
+    };
+
     return (
-        <Card sx={{ display: 'flex', p: 3, boxShadow: 'none', bgcolor: '#fff' }}>
+        <Card
+            sx={{
+                display: 'flex',
+                alignItems: 'stretch',
+                p: 3,
+                boxShadow: 'none',
+                bgcolor: '#ffffff',
+            }}
+        >
             {/* 왼쪽: 이미지 영역 */}
-            <Box sx={{ mr: 4, minWidth: 160, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box
+                sx={{
+                    mr: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: 160,
+                }}
+            >
                 <CardMedia
                     component="img"
                     image={displayImage}
@@ -38,9 +64,18 @@ function BookCard({
 
             {/* 오른쪽: 제목 / 조회수 / 내용 */}
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                {/* 제목 + 조회수 줄 */}
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        mb: 1.5,
+                    }}
+                >
+                    <Typography
+                        variant="h6"
+                        sx={{ fontWeight: 'bold', cursor: 'pointer' }}
+                        onClick={handleTitleClick}
+                    >
                         {displayTitle}
                     </Typography>
                     <Typography variant="body2">조회수 : {displayViews}</Typography>
