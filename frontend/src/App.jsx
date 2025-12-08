@@ -11,6 +11,18 @@ import LoginPage from './components/login.jsx'; // ← login import 추가
 import RegisterPage from './components/register.jsx';
 import FindAccount from "./components/find_account.jsx"; // ← register import 추가
 
+const express = require('express');
+const app = express();
+const booksRouter = require('./books.routes');
+
+app.use(express.json());
+app.use(booksRouter);
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
 const theme = createTheme({
   palette: {
     primary: {
