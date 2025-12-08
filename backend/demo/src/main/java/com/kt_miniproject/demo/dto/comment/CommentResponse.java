@@ -1,17 +1,22 @@
 package com.kt_miniproject.demo.dto.comment;
 
 import com.kt_miniproject.demo.domain.comment.Comment;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 public class CommentResponse {
     private Long id;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private Integer recommend;
+    private Long userId;
+    private String userName;
+    private Long bookId;
 
     public CommentResponse(Comment comment) {
         this.id = comment.getId();

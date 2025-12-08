@@ -60,8 +60,9 @@ public class BookController {
     // 5. 도서 삭제 (Delete)
     // DELETE /api/books/{id}
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
+    public ResponseEntity<Void> deleteBook(@PathVariable("id") Long id,
+                                           @RequestParam("userId") Long userId) {
+        bookService.deleteBook(id,userId);
         return ResponseEntity.noContent().build();   // 204 응답
     }
 

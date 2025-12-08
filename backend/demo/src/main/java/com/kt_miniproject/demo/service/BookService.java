@@ -20,7 +20,7 @@ public interface BookService {
     BookResponse updateBook(Long id, BookCreateRequest request);
 
     // 삭제
-    void deleteBook(Long id);
+    void deleteBook(Long id, Long userId);
 
     // 제목 검색
     List<BookResponse> searchBooks(String title);
