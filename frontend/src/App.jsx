@@ -6,6 +6,8 @@ import BookCreatePage from './components/BookCreatePage';
 import BookEditPage from './components/BookEditPage';
 import InfoPage from './components/InfoPage';
 
+
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -37,7 +39,7 @@ function App() {
           <Route path="/" element={<Navigate to="/books/create" replace />} />
           <Route path="/books/create" element={<BookCreatePage />} />
           <Route path="/books/:id/edit" element={<BookEditPage />} />
-          <Route path="/books/:id/info" element={<InfoPage />} />
+            <Route path="/books/:id" element={<InfoPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
