@@ -67,7 +67,7 @@ function App() {
           {/*<Route path="/test/revision2" element={<Navigate to="/revision/2" replace />} />*/}
           {/*<Route path="/test/revision3" element={<Navigate to="/revision/3" replace />} />*/}
           {/*상세정보보기*/}
-          <Route path="/books/:id/info" element={<InfoPage />} />
+          <Route path="/books/:id" element={<InfoPage />} />
             <Route path="/enroll" element={<Enroll />} />
 
         </Routes>
