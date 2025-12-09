@@ -1,5 +1,5 @@
 // src/main/java/com/kt_miniproject/demo/config/WebConfig.java
-package com.kt_miniproject.demo.config;
+package com.kt_miniproject.demo;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
