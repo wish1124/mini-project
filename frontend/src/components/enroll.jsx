@@ -183,7 +183,7 @@ function Enroll() {
 
             console.log('신규 도서 생성 요청 데이터(JSON):', payload);
 
-            const createRes = await axios.post('/api/books', payload);
+            const createRes = await axios.post('http://localhost:8080/api/books', payload);
             // 생성된 도서 id 추출 (백엔드 응답 형식에 따라 조정)
             const created = createRes.data?.data || createRes.data || {};
             const createdId = created.id;
@@ -205,7 +205,7 @@ function Enroll() {
                     createdId,
                     previewImage,
                 );
-                await axios.post('/api/books/updateBookCoverUrl', {
+                await axios.post('http://localhost:8080/api/books/updateBookCoverUrl', {
                     bookId: createdId,
                     coverImageUrl: previewImage,
                 });
