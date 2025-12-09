@@ -24,7 +24,7 @@ function RegisterPage() {
         email: '',
         password: '',
         name: '',
-        role: 1,        // 기본값 설정
+        role: 'USER',        // 기본값 설정
         apiKey: '',     // 선택사항
     });
 
@@ -54,8 +54,8 @@ function RegisterPage() {
             });
 
             // if (response.data.status === 'success') {
-            //     alert('회원가입 성공!');
-            //     navigate('/login'); // 성공 시 로그인 페이지로 이동
+            alert('회원가입 성공!');
+            navigate('/login'); // 성공 시 로그인 페이지로 이동
             // }
         } catch (err) {
             const message = err.response?.data?.message || '서버 오류가 발생했습니다.';
