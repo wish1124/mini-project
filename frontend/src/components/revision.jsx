@@ -63,7 +63,9 @@ function Revision() {
     const fetchBookDetails = async () => {
         setFetchLoading(true);
         try {
-            const response = await axios.get(`http://localhost:8080/api/books/${id}`);
+            const response = await axios.get(
+              `http://localhost:8080/api/books/${id}`
+            );
 
             if (response.data.success && response.data.data) {
                 const book = response.data.data;
@@ -246,11 +248,12 @@ function Revision() {
             const payload = {
                 title: formData.title,
                 content: formData.content,
+                userId: userId,
             };
 
             const response = await axios.put(
-                `/api/books/${id}`,
-                payload,
+              `http://localhost:8080/api/books/${id}`,
+              payload
             );
 
             if (!response.data?.success) {
@@ -266,10 +269,13 @@ function Revision() {
                 (formData.coverImageType === 'ai' ||
                     formData.coverImageType === 'upload')
             ) {
-                await axios.post('/api/books/updateBookCoverUrl', {
+                await axios.post(
+                  'http://localhost:8080/api/books/updateBookCoverUrl',
+                  {
                     bookId: id,
                     coverImageUrl: previewImage,
-                });
+                  }
+                );
             }
 
             setSuccess('도서가 성공적으로 수정되었습니다!');

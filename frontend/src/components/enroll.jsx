@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Container, Box, Typography, TextField, Button, Paper,
-    RadioGroup, FormControlLabel, Radio, FormControl, FormLabel,
-    Alert, CircularProgress, Card, CardMedia
+    Container,
+    Box,
+    Typography,
+    TextField,
+    Button,
+    Paper,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
+    FormControl,
+    FormLabel,
+    Alert,
+    CircularProgress,
+    Card,
+    CardMedia,
 } from '@mui/material';
 import {
     CloudUpload as CloudUploadIcon,
     AutoAwesome as AutoAwesomeIcon,
-    Save as SaveIcon
+    Save as SaveIcon,
 } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
@@ -99,7 +111,7 @@ function Enroll() {
                         n: 1,
                         size: '512x512',
                     }),
-                }
+                },
             );
 
             if (!response.ok) {
@@ -175,30 +187,68 @@ function Enroll() {
         setSuccess('');
 
         try {
-            const formDataToSend = new FormData();
-            formDataToSend.append('title', formData.title);
-            formDataToSend.append('content', formData.content);
+            // 0) 로그인한 사용자 정보에서 userId 가져오기 (localStorage 예시)
+            const storedUser = localStorage.getItem('user');
+            let userId = null;
 
-            if (formData.coverImageType === 'upload' && uploadedImage) {
-                // 업로드한 파일은 coverImage로 전송 → 백엔드가 저장 후 coverImageUrl 세팅
-                formDataToSend.append('coverImage', uploadedImage);
-            } else if (formData.coverImageType === 'ai' && previewImage) {
-                // AI 이미지 URL을 그대로 coverImageUrl 필드에 담아서 전송
-                formDataToSend.append('coverImageUrl', previewImage);
+            if (storedUser) {
+                try {
+                    const user = JSON.parse(storedUser);
+                    userId = user.id ?? user.userId ?? null;
+                } catch (e) {
+                    console.error('user 정보 파싱 오류:', e);
+                }
             }
 
-            console.log('전송 데이터 :', {
+            if (!userId) {
+                setError(
+                    '로그인 정보(userId)를 찾을 수 없습니다. 다시 로그인 후 시도해주세요.',
+                );
+                setLoading(false);
+                return;
+            }
+
+            // 1) 기본 도서 정보 JSON으로 등록
+            const payload = {
                 title: formData.title,
                 content: formData.content,
-                coverType: formData.coverImageType,
-                coverImageUrl: formData.coverImageType === 'ai'
-                    ? previewImage
-                    : '(업로드 파일 사용)',
-            });
+                userId: userId,
+            };
 
-            const response = await axios.post('http://localhost:8080/api/books', formDataToSend, {
+            console.log('신규 도서 생성 요청 데이터(JSON):', payload);
 
-            });
+            const createRes = await axios.post(
+                'http://localhost:8080/api/books',
+                payload,
+            );
+            const created = createRes.data?.data || createRes.data || {};
+            const createdId = created.id;
+
+            if (!createdId) {
+                throw new Error(
+                    '도서 ID를 가져오지 못했습니다. 백엔드 응답 형식을 확인해주세요.',
+                );
+            }
+
+            // 2) 표지 이미지가 있는 경우(AI/업로드 공통) URL을 별도 엔드포인트로 저장
+            if (
+                previewImage &&
+                (formData.coverImageType === 'ai' ||
+                    formData.coverImageType === 'upload')
+            ) {
+                console.log(
+                    '표지 URL 업데이트 요청:',
+                    createdId,
+                    previewImage,
+                );
+                await axios.post(
+                    'http://localhost:8080/api/books/updateBookCoverUrl',
+                    {
+                        bookId: createdId,
+                        coverImageUrl: previewImage,
+                    },
+                );
+            }
 
             setSuccess('도서가 성공적으로 등록되었습니다!');
             setTimeout(() => navigate('/MainPage'), 1500);
@@ -401,8 +451,7 @@ function Enroll() {
                                         표지 미리보기
                                     </Typography>
 
-                                    {formData.coverImageType ===
-                                        'ai' && (
+                                    {formData.coverImageType === 'ai' && (
                                         <Box
                                             sx={{
                                                 display: 'flex',
@@ -462,9 +511,7 @@ function Enroll() {
                                     variant="outlined"
                                     size="large"
                                     fullWidth
-                                    onClick={() =>
-                                        navigate('/MainPage')
-                                    }
+                                    onClick={() => navigate('/MainPage')}
                                     disabled={loading}
                                 >
                                     취소
