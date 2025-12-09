@@ -74,7 +74,7 @@ function App() {
                     <Route path="/MainPage" element={<MainPage />} />
 
                     {/*상세조회 - 성빈*/}
-                    <Route path="/infoPage:id" element={<InfoPage />} />
+                    <Route path="/infoPage/:id" element={<InfoPage />} />
 
 
                     {/*  /!* 테스트용 직접 링크 *!/*/}
