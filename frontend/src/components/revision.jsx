@@ -246,6 +246,7 @@ function Revision() {
             const payload = {
                 title: formData.title,
                 content: formData.content,
+                userId: userId,
             };
 
             const response = await axios.put(

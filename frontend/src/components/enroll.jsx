@@ -179,6 +179,7 @@ function Enroll() {
             const payload = {
                 title: formData.title,
                 content: formData.content,
+                userId: userId, 
             };
 
             console.log('신규 도서 생성 요청 데이터(JSON):', payload);
