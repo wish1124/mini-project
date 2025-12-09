@@ -37,7 +37,7 @@ export default function InfoDetail() {
 
         try {
             const res = await fetch(
-                `/api/v1/books/${bookId}/like`,
+                `/api/books/${bookId}/like`,
                 {
                     method: "POST",
                     headers: {
