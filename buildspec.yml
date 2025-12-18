@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo "=== Install phase ==="
+      - java -version
+
+  pre_build:
+    commands:
+      - echo "=== Pre-build phase ==="
+      - ls
+      - cd book_mini/backend/demo
+
+  build:
+    commands:
+      - echo "=== Build phase ==="
+      - chmod +x ./gradlew || true
+      - ./gradlew clean build -x test
+
+artifacts:
+  files:
+    - book_mini/backend/demo/build/libs/*.jar
