@@ -12,7 +12,7 @@ phases:
     commands:
       - echo "=== Pre-build phase ==="
       - ls
-      - cd book_mini/backend/demo
+      - cd backend/demo
 
   build:
     commands:
@@ -22,4 +22,4 @@ phases:
 
 artifacts:
   files:
-    - book_mini/backend/demo/build/libs/*.jar
+    - backend/demo/build/libs/*.jar
