@@ -1,25 +1,44 @@
+#version: 0.2
+#
+#phases:
+#  install:
+#    runtime-versions:
+#      java: corretto17
+#    commands:
+#      - echo "=== Install phase ==="
+#      - java -version
+#
+#  pre_build:
+#    commands:
+#      - echo "=== Pre-build phase ==="
+#      - ls
+#      - cd backend/demo
+#
+#  build:
+#    commands:
+#      - echo "=== Build phase ==="
+#      - chmod +x ./gradlew || true
+#      - ./gradlew clean build -x test
+#
+#artifacts:
+#  files:
+#    - backend/demo/build/libs/*.jar
+
 version: 0.2
 
 phases:
   install:
     runtime-versions:
-      java: corretto17
+      nodejs: 18
     commands:
-      - echo "=== Install phase ==="
-      - java -version
-
-  pre_build:
-    commands:
-      - echo "=== Pre-build phase ==="
-      - ls
-      - cd backend/demo
+      - cd frontend/src
+      - npm install
 
   build:
     commands:
-      - echo "=== Build phase ==="
-      - chmod +x ./gradlew || true
-      - ./gradlew clean build -x test
+      - npm run build
 
 artifacts:
+  base-directory: frontend/src/build
   files:
-    - backend/demo/build/libs/*.jar
+    - '**/*'
